@@ -1,11 +1,17 @@
 import express from 'express'
 
-import serviceController from './controllers/serviceController'
+import authRoutes from './routes/authRoutes'
+import serviceRoutes from './routes/serviceRoutes'
+import scheduleRoutes from './routes/scheduleRoutes'
+import overrideRoutes from './routes/overrideRoutes'
+import reservationRoutes from './routes/reservationRoutes'
 
 const router = express.Router()
 
-router.get("/services", serviceController.createService)
-router.put("/services/:service", serviceController.updateService)
-router.delete("/services/:service", serviceController.deleteService)
+router.use("/auth", authRoutes)
+router.use("/services", serviceRoutes)
+router.use("/schedules", scheduleRoutes)
+router.use("/overrides", overrideRoutes)
+router.use("/reservations", reservationRoutes)
 
 export default router

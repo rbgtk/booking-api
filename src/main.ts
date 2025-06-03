@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000
 
 app.use(cors())
 app.use(express.json())
-app.use(router)
+app.use("/api", router)
 
 app.listen(port, host, () => {
   console.log(`Server running on http://${host}:${port}`)

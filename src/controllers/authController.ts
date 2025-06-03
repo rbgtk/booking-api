@@ -14,8 +14,10 @@ if (!secret) {
 
 const prisma = new PrismaClient()
 
-export async function login(req: Request, res: Response) {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
+
+  console.log(`Attempting login for ${email}`)
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' })
@@ -42,9 +44,27 @@ export async function login(req: Request, res: Response) {
       expiresIn: '1d', // 1 day expiry
     })
 
-    return res.json({ token })
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    })
+    
+    return res.json({ message: 'Logged in successfully' })
   } catch (error) {
     console.error(error)
     return res.status(500).json({ error: 'Server error' })
   }
 }
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+  })
+
+  return res.json({ message: 'Logged out successfully' })
+}
+

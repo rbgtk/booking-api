@@ -21,9 +21,9 @@ export const getLocationById = async (req: Request, res: Response) => {
     if (!location) {
       return res.status(404).json({ error: 'Location not found' })
     }
-    res.json(location)
+    return res.json(location)
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching location' })
+    return res.status(500).json({ error: 'Error fetching location' })
   }
 }
 

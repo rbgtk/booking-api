@@ -1,19 +1,18 @@
-import { Router } from 'express';
+import { Router } from 'express'
 import {
   getAllExceptions,
   getExceptionsByLocation,
   createException,
   updateException,
   deleteException,
-} from '../controllers/exceptionController';
+} from '../controllers/exceptionController'
 
-const router = Router();
+const router = Router()
 
-router.get('/', getAllExceptions);
-router.get('/:locationId', getExceptionsByLocation);
-router.post('/', createException);
-router.put('/:id', updateException);
-router.delete('/:id', deleteException);
+router.get('/', getAllExceptions)
+router.get('/:locationId', getExceptionsByLocation)
+router.post('/', createException)
+router.put('/:id', updateException)
+router.delete('/:id', deleteException)
 
-export default router;
-
+export default router

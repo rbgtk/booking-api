@@ -13,9 +13,91 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Location {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  address     String
+
+  schedules    ScheduleTemplate[]
+  exceptions   ScheduleException[]
+  PrivateEvent PrivateEvent[]
+  Reservation  Reservation[]
+}
+
+model ScheduleTemplate {
+  id         Int      @id @default(autoincrement())
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  weekday Int // 0=Sunday, 1=Monday, ..., 6=Saturday
+  time    String // "19:00" for 7pm, or DateTime if needed
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScheduleException {
+  id   Int      @id @default(autoincrement())
+  date DateTime // Date when the exception occurs
+
+  // Exception can be either for a specific location or global (owner unavailable)
+  location   Location? @relation(fields: [locationId], references: [id])
+  locationId Int? // nullable => if null, it's an owner exception
+
+  reason String?
+}
+
+model PrivateEvent {
+  id   Int      @id @default(autoincrement())
+  date DateTime
+  time String // or DateTime for combined date+time if easier
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  guestName  String
+  guestEmail String
+  guestPhone String?
+
+  status EventStatus @default(PENDING) // PENDING, ACCEPTED, REJECTED
+
+  paymentStatus PaymentStatus @default(PENDING)
+
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  id Int @id @default(autoincrement())
+
+  eventDate DateTime // actual date (based on schedule + exceptions)
+  time      String // "19:00"
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  guestName  String
+  guestEmail String
+  guestPhone String?
+
+  paymentStatus PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum EventStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
 }
 

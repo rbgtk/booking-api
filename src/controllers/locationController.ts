@@ -28,10 +28,10 @@ export const getLocationById = async (req: Request, res: Response) => {
 }
 
 export const createLocation = async (req: Request, res: Response) => {
-  const { name, description, address } = req.body
+  const { name, description, address, iframe } = req.body
   try {
     const newLocation = await prisma.location.create({
-      data: { name, description, address },
+      data: { name, description, address, iframe },
     })
     res.status(201).json(newLocation)
   } catch (error) {
@@ -41,11 +41,11 @@ export const createLocation = async (req: Request, res: Response) => {
 
 export const updateLocation = async (req: Request, res: Response) => {
   const { id } = req.params
-  const { name, description, address } = req.body
+  const { name, description, address, iframe } = req.body
   try {
     const updatedLocation = await prisma.location.update({
       where: { id: Number(id) },
-      data: { name, description, address },
+      data: { name, description, address, iframe },
     })
     res.json(updatedLocation)
   } catch (error) {

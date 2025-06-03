@@ -14,6 +14,10 @@ if (!secret) {
 
 const prisma = new PrismaClient()
 
+export const check = async (req: Request, res: Response) => {
+  return res.json({ message: 'You are logged in' })
+}
+
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
@@ -50,7 +54,9 @@ export const login = async (req: Request, res: Response) => {
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     })
-    
+
+    console.log(`Succesfully logged in, cookie is set`)
+
     return res.json({ message: 'Logged in successfully' })
   } catch (error) {
     console.error(error)
@@ -67,4 +73,3 @@ export const logout = async (req: Request, res: Response) => {
 
   return res.json({ message: 'Logged out successfully' })
 }
-

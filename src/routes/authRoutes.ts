@@ -1,9 +1,11 @@
 import express from 'express'
-import { login, logout } from '../controllers/authController'
+import { check, login, logout } from '../controllers/authController'
+import { verifyCookie } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
+router.get('/me', verifyCookie, check)
 router.post('/login', login)
-router.post('/logout', logout)
+router.post('/logout', verifyCookie, logout)
 
 export default router

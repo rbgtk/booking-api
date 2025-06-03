@@ -1,17 +1,19 @@
 import express from 'express'
 
 import authRoutes from './routes/authRoutes'
-import serviceRoutes from './routes/serviceRoutes'
+import locationRoutes from './routes/locationRoutes'
 import scheduleRoutes from './routes/scheduleRoutes'
-import overrideRoutes from './routes/overrideRoutes'
+import exceptionRoutes from './routes/exceptionRoutes'
 import reservationRoutes from './routes/reservationRoutes'
+import privateEventRoutes from './routes/privateEventRoutes'
 
 const router = express.Router()
 
-router.use("/auth", authRoutes)
-router.use("/services", serviceRoutes)
-router.use("/schedules", scheduleRoutes)
-router.use("/overrides", overrideRoutes)
-router.use("/reservations", reservationRoutes)
+router.use('/auth', authRoutes)
+router.use('/locations', locationRoutes)
+router.use('/schedules', scheduleRoutes)
+router.use('/exceptions', exceptionRoutes)
+router.use('/reservations', reservationRoutes)
+router.use('/private-events', privateEventRoutes)
 
 export default router

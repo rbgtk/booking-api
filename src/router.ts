@@ -10,7 +10,7 @@ import scheduleExceptionRoutes from './routes/scheduleExceptionRoutes'
 const router = express.Router()
 
 router.use('/auth', authRoutes)
-router.use('/customers', guestRoutes)
+router.use('/customers', customerRoutes)
 router.use('/locations', locationRoutes)
 router.use('/events/onetime', oneTimeEventRoutes)
 router.use('/events/recurring', recurringEventRoutes)

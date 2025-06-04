@@ -31,16 +31,16 @@ model Customer {
 }
 
 model Location {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  address           String
-  mapIframe         String?
-  PlannedEvent      PlannedEvent[]
-  ScheduledEvent    ScheduledEvent[]
-  ScheduleException ScheduleException[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  id                    Int                     @id @default(autoincrement())
+  name                  String
+  description           String
+  address               String
+  mapIframe             String?
+  PlannedEvent          PlannedEvent[]
+  ScheduledEvent        ScheduledEvent[]
+  AvailabilityException AvailabilityException[]
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
 }
 
 model PlannedEvent {
@@ -68,7 +68,7 @@ model ScheduledEvent {
   updatedAt   DateTime @updatedAt
 }
 
-model ScheduleException {
+model AvailabilityException {
   id   Int      @id @default(autoincrement())
   date DateTime // Date when the exception occurs
 

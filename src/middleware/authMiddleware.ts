@@ -19,7 +19,6 @@ export function verifyCookie(req: Request, res: Response, next: NextFunction) {
 
   try {
     const decoded = jwt.verify(token, secret)
-    //req.user = decoded
     next()
   } catch (error) {
     return res.status(401).json({ error: 'Invalid or expired token' })

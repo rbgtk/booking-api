@@ -38,6 +38,38 @@ export async function getLocationById(req: Request, res: Response) {
   }
 }
 
+export async function getOneTimeEventsByLocationId(
+  req: Request,
+  res: Response
+) {
+  const { id } = req.params
+
+  try {
+    const oneTimeEvents = await prisma.oneTimeEvent.findMany({
+      where: { locationId: Number(id) },
+    })
+    res.json(oneTimeEvents)
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching oneTime events by location' })
+  }
+}
+
+export async function getRecurringEventsByLocationId(
+  req: Request,
+  res: Response
+) {
+  const { id } = req.params
+
+  try {
+    const recurringEvents = await prisma.recurringEvent.findMany({
+      where: { locationId: Number(id) },
+    })
+    res.json(recurringEvents)
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching oneTime events by location' })
+  }
+}
+
 export async function updateLocation(req: Request, res: Response) {
   const { id } = req.params
   const { name, description, address, mapUrl } = req.body

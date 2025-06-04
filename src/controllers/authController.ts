@@ -21,8 +21,6 @@ export const check = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
-  console.log(`Attempting login for ${email}`)
-
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' })
   }
@@ -54,8 +52,6 @@ export const login = async (req: Request, res: Response) => {
       sameSite: 'strict',
       maxAge: 24 * 60 * 60 * 1000, // 1 day
     })
-
-    console.log(`Succesfully logged in, cookie is set`)
 
     return res.json({ message: 'Logged in successfully' })
   } catch (error) {

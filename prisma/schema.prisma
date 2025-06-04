@@ -13,6 +13,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model Admin {
   id           Int      @id @default(autoincrement())
   email        String   @unique
@@ -31,19 +41,19 @@ model Customer {
 }
 
 model Location {
-  id                    Int                     @id @default(autoincrement())
-  name                  String
-  description           String
-  address               String
-  mapIframe             String?
-  PlannedEvent          PlannedEvent[]
-  ScheduledEvent        ScheduledEvent[]
-  AvailabilityException AvailabilityException[]
-  createdAt             DateTime                @default(now())
-  updatedAt             DateTime                @updatedAt
+  id                Int                 @id @default(autoincrement())
+  name              String
+  description       String
+  address           String
+  mapUrl            String?
+  OneTimeEvent      OneTimeEvent[]
+  RecurringEvent    RecurringEvent[]
+  ScheduleException ScheduleException[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
-model PlannedEvent {
+model OneTimeEvent {
   id          Int      @id @default(autoincrement())
   name        String
   description String
@@ -55,7 +65,7 @@ model PlannedEvent {
   updatedAt   DateTime @updatedAt
 }
 
-model ScheduledEvent {
+model RecurringEvent {
   id          Int      @id @default(autoincrement())
   name        String
   description String
@@ -68,15 +78,12 @@ model ScheduledEvent {
   updatedAt   DateTime @updatedAt
 }
 
-model AvailabilityException {
-  id   Int      @id @default(autoincrement())
-  date DateTime // Date when the exception occurs
-
-  // Exception can be either for a specific location or global (owner unavailable)
+model ScheduleException {
+  id         Int       @id @default(autoincrement())
+  date       DateTime
   location   Location? @relation(fields: [locationId], references: [id])
   locationId Int?
-
-  reason    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  reason     String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }

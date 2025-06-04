@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "Weekday" AS ENUM ('MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY');
+
 -- CreateTable
 CREATE TABLE "Admin" (
     "id" SERIAL NOT NULL,
@@ -27,7 +30,7 @@ CREATE TABLE "Location" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "address" TEXT NOT NULL,
-    "mapIframe" TEXT,
+    "mapUrl" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -35,7 +38,7 @@ CREATE TABLE "Location" (
 );
 
 -- CreateTable
-CREATE TABLE "PlannedEvent" (
+CREATE TABLE "OneTimeEvent" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -45,11 +48,11 @@ CREATE TABLE "PlannedEvent" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "PlannedEvent_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "OneTimeEvent_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ScheduledEvent" (
+CREATE TABLE "RecurringEvent" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
@@ -60,11 +63,11 @@ CREATE TABLE "ScheduledEvent" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "ScheduledEvent_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "RecurringEvent_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "AvailabilityException" (
+CREATE TABLE "ScheduleException" (
     "id" SERIAL NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "locationId" INTEGER,
@@ -72,7 +75,7 @@ CREATE TABLE "AvailabilityException" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "AvailabilityException_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "ScheduleException_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -82,10 +85,10 @@ CREATE UNIQUE INDEX "Admin_email_key" ON "Admin"("email");
 CREATE UNIQUE INDEX "Customer_email_key" ON "Customer"("email");
 
 -- AddForeignKey
-ALTER TABLE "PlannedEvent" ADD CONSTRAINT "PlannedEvent_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OneTimeEvent" ADD CONSTRAINT "OneTimeEvent_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ScheduledEvent" ADD CONSTRAINT "ScheduledEvent_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "RecurringEvent" ADD CONSTRAINT "RecurringEvent_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "AvailabilityException" ADD CONSTRAINT "AvailabilityException_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ScheduleException" ADD CONSTRAINT "ScheduleException_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("id") ON DELETE SET NULL ON UPDATE CASCADE;

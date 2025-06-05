@@ -1,5 +1,7 @@
 import express from 'express'
 
+import { logRequest } from './middleware/logMiddleware'
+
 import authRoutes from './routes/authRoutes'
 import customerRoutes from './routes/customerRoutes'
 import locationRoutes from './routes/locationRoutes'
@@ -9,6 +11,7 @@ import scheduleExceptionRoutes from './routes/scheduleExceptionRoutes'
 
 const router = express.Router()
 
+router.use('/', logRequest)
 router.use('/auth', authRoutes)
 router.use('/customers', customerRoutes)
 router.use('/locations', locationRoutes)

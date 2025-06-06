@@ -41,16 +41,16 @@ model Customer {
 }
 
 model Location {
-  id                Int                 @id @default(autoincrement())
-  name              String
-  description       String
-  address           String
-  mapUrl            String?
-  OneTimeEvent      OneTimeEvent[]
-  RecurringEvent    RecurringEvent[]
-  ScheduleException ScheduleException[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String
+  address        String
+  mapUrl         String?
+  OneTimeEvent   OneTimeEvent[]
+  RecurringEvent RecurringEvent[]
+  Unavailability Unavailability[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
 
 model OneTimeEvent {
@@ -78,7 +78,7 @@ model RecurringEvent {
   updatedAt   DateTime @updatedAt
 }
 
-model ScheduleException {
+model Unavailability {
   id         Int       @id @default(autoincrement())
   date       DateTime
   location   Location? @relation(fields: [locationId], references: [id])

@@ -7,7 +7,7 @@ import customerRoutes from './routes/customerRoutes'
 import locationRoutes from './routes/locationRoutes'
 import oneTimeEventRoutes from './routes/oneTimeEventRoutes'
 import recurringEventRoutes from './routes/recurringEventRoutes'
-import eventScheduleExceptionRoutes from './routes/eventScheduleExceptionRoutes'
+import unavailabilityRoutes from './routes/unavailabilityRoutes'
 
 const router = express.Router()
 
@@ -17,6 +17,6 @@ router.use('/customers', customerRoutes)
 router.use('/locations', locationRoutes)
 router.use('/events/onetime', oneTimeEventRoutes)
 router.use('/events/recurring', recurringEventRoutes)
-router.use('/events/exceptions', scheduleExceptionRoutes)
+router.use('/unavailabilities', unavailabilityRoutes)
 
 export default router

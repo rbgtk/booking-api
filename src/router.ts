@@ -1,6 +1,7 @@
 import express from 'express'
 
 import { logRequest } from './middleware/logMiddleware'
+import { errorHandler } from './middleware/errorMiddleWare'
 
 import authRoutes from './routes/authRoutes'
 import customerRoutes from './routes/customerRoutes'
@@ -18,5 +19,6 @@ router.use('/locations', locationRoutes)
 router.use('/events/onetime', oneTimeEventRoutes)
 router.use('/events/recurring', recurringEventRoutes)
 router.use('/unavailabilities', unavailabilityRoutes)
+router.use(errorHandler)
 
 export default router

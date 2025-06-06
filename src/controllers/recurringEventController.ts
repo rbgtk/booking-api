@@ -8,7 +8,14 @@ export async function createRecurringEvent(req: Request, res: Response) {
 
   try {
     const recurringEvent = await prisma.recurringEvent.create({
-      data: { name, description, weekday, time, locationId, price },
+      data: {
+        name,
+        description,
+        weekday,
+        time,
+        location: { connect: { id: locationId } },
+        price,
+      },
     })
     res.json(recurringEvent)
   } catch (error) {
@@ -18,7 +25,9 @@ export async function createRecurringEvent(req: Request, res: Response) {
 
 export async function getAllRecurringEvents(req: Request, res: Response) {
   try {
-    const recurringEvents = await prisma.recurringEvent.findMany()
+    const recurringEvents = await prisma.recurringEvent.findMany({
+      include: { location: true },
+    })
     res.json(recurringEvents)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching recurringEvents' })
@@ -31,6 +40,7 @@ export async function getRecurringEventById(req: Request, res: Response) {
   try {
     const recurringEvent = await prisma.recurringEvent.findUnique({
       where: { id: Number(id) },
+      include: { location: true },
     })
     res.json(recurringEvent)
   } catch (error) {
@@ -45,7 +55,14 @@ export async function updateRecurringEvent(req: Request, res: Response) {
   try {
     const recurringEvent = await prisma.recurringEvent.update({
       where: { id: Number(id) },
-      data: { name, description, weekday, time, locationId, price },
+      data: {
+        name,
+        description,
+        weekday,
+        time,
+        location: { connect: { id: locationId } },
+        price,
+      },
     })
     res.json(recurringEvent)
   } catch (error) {

@@ -8,7 +8,7 @@ export async function createScheduleException(req: Request, res: Response) {
 
   try {
     const scheduleException = await prisma.scheduleException.create({
-      data: { date, locationId, reason },
+      data: { date, location: { connect: { id: locationId } }, reason },
     })
     res.json(scheduleException)
   } catch (error) {
@@ -29,7 +29,9 @@ export async function getScheduleExceptionById(req: Request, res: Response) {
   const { id } = req.params
 
   try {
-    const scheduleException = await prisma.scheduleException.findUnique({ where: { id: Number(id) } })
+    const scheduleException = await prisma.scheduleException.findUnique({
+      where: { id: Number(id) },
+    })
     res.json(scheduleException)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching scheduleException' })
@@ -43,7 +45,7 @@ export async function updateScheduleException(req: Request, res: Response) {
   try {
     const scheduleException = await prisma.scheduleException.update({
       where: { id: Number(id) },
-      data: { date, locationId, reason },
+      data: { date, location: { connect: { id: locationId } }, reason },
     })
     res.json(scheduleException)
   } catch (error) {

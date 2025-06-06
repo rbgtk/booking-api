@@ -79,6 +79,7 @@ export async function updateLocation(req: Request, res: Response) {
       where: { id: Number(id) },
       data: { name, description, address, mapUrl },
     })
+
     res.json(location)
   } catch (error) {
     res.status(500).json({ error: 'Error updating location' })

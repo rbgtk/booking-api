@@ -8,17 +8,25 @@ export async function createOneTimeEvent(req: Request, res: Response) {
 
   try {
     const oneTimeEvent = await prisma.oneTimeEvent.create({
-      data: { name, description, date, locationId, price },
+      data: {
+        name,
+        description,
+        date,
+        location: { connect: { id: locationId } },
+        price,
+      },
     })
     res.json(oneTimeEvent)
   } catch (error) {
-    res.status(500).json({ error: 'Error creating oneTimeEvent' })
+    res.status(500).json({ error: `Error creating oneTimeEvent: ${error}` })
   }
 }
 
 export async function getAllOneTimeEvents(req: Request, res: Response) {
   try {
-    const oneTimeEvents = await prisma.oneTimeEvent.findMany()
+    const oneTimeEvents = await prisma.oneTimeEvent.findMany({
+      include: { location: true },
+    })
     res.json(oneTimeEvents)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching oneTimeEvents' })
@@ -31,6 +39,7 @@ export async function getOneTimeEventById(req: Request, res: Response) {
   try {
     const oneTimeEvent = await prisma.oneTimeEvent.findUnique({
       where: { id: Number(id) },
+      include: { location: true },
     })
     res.json(oneTimeEvent)
   } catch (error) {
@@ -45,7 +54,13 @@ export async function updateOneTimeEvent(req: Request, res: Response) {
   try {
     const oneTimeEvent = await prisma.oneTimeEvent.update({
       where: { id: Number(id) },
-      data: { name, description, date, locationId, price },
+      data: {
+        name,
+        description,
+        date,
+        location: { connect: { id: locationId } },
+        price,
+      },
     })
     res.json(oneTimeEvent)
   } catch (error) {

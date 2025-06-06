@@ -12,7 +12,7 @@ export async function createOneTimeEvent(req: Request, res: Response) {
         name,
         description,
         date,
-        location: { connect: { id: locationId } },
+        location: { connect: { id: Number(locationId) } },
         price,
       },
     })
@@ -58,7 +58,7 @@ export async function updateOneTimeEvent(req: Request, res: Response) {
         name,
         description,
         date,
-        location: { connect: { id: locationId } },
+        location: { connect: { id: Number(locationId) } },
         price,
       },
     })

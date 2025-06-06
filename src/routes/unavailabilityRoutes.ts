@@ -1,7 +1,7 @@
 import express from 'express'
 import {
   createUnavailability,
-  getAllUnavailabilitys,
+  getAllUnavailabilities,
   getUnavailabilityById,
   updateUnavailability,
   deleteUnavailability,
@@ -10,7 +10,7 @@ import {
 const router = express.Router()
 
 router.post('/', createUnavailability)
-router.get('/', getAllUnavailabilitys)
+router.get('/', getAllUnavailabilities)
 router.get('/:id', getUnavailabilityById)
 router.put('/:id', updateUnavailability)
 router.delete('/:id', deleteUnavailability)

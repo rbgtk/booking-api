@@ -16,12 +16,12 @@ export async function createUnavailability(req: Request, res: Response) {
   }
 }
 
-export async function getAllUnavailabilitys(req: Request, res: Response) {
+export async function getAllUnavailabilities(req: Request, res: Response) {
   try {
-    const unavailabilitys = await prisma.unavailability.findMany()
-    res.json(unavailabilitys)
+    const unavailabilities = await prisma.unavailability.findMany()
+    res.json(unavailabilities)
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching unavailabilitys' })
+    res.status(500).json({ error: 'Error fetching unavailabilities' })
   }
 }
 

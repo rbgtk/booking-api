@@ -4,6 +4,7 @@ import { logRequest } from './middleware/logMiddleware'
 import { errorHandler } from './middleware/errorMiddleware'
 
 import authRoutes from './routes/authRoutes'
+import announcementRoutes from './routes/announcementRoutes'
 import customerRoutes from './routes/customerRoutes'
 import locationRoutes from './routes/locationRoutes'
 import oneTimeEventRoutes from './routes/oneTimeEventRoutes'
@@ -14,6 +15,7 @@ const router = express.Router()
 
 router.use('/', logRequest)
 router.use('/auth', authRoutes)
+router.use('/announcements', announcementRoutes)
 router.use('/customers', customerRoutes)
 router.use('/locations', locationRoutes)
 router.use('/events/onetime', oneTimeEventRoutes)

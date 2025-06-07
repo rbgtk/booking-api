@@ -23,6 +23,12 @@ enum Weekday {
   SUNDAY
 }
 
+enum ReservationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model Admin {
   id           Int      @id @default(autoincrement())
   email        String   @unique

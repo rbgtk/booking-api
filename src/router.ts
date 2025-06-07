@@ -1,7 +1,7 @@
 import express from 'express'
 
 import { logRequest } from './middleware/logMiddleware'
-import { errorHandler } from './middleware/errorMiddleWare'
+import { errorHandler } from './middleware/errorMiddleware'
 
 import authRoutes from './routes/authRoutes'
 import customerRoutes from './routes/customerRoutes'

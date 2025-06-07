@@ -5,18 +5,18 @@ import {
   getLocationById,
   updateLocation,
   deleteLocation,
-  getOneTimeEventsByLocationId,
-  getRecurringEventsByLocationId,
 } from '../controllers/locationController'
+import { verifyCookie } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
-router.post('/', createLocation)
+// public routes
 router.get('/', getAllLocations)
 router.get('/:id', getLocationById)
-router.get('/:id/events/onetime', getOneTimeEventsByLocationId)
-router.get('/:id/events/recurring', getRecurringEventsByLocationId)
-router.put('/:id', updateLocation)
-router.delete('/:id', deleteLocation)
+
+// protected routes
+router.post('/', verifyCookie, createLocation)
+router.put('/:id', verifyCookie, updateLocation)
+router.delete('/:id', verifyCookie, deleteLocation)
 
 export default router

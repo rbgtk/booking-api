@@ -4,8 +4,11 @@ import { verifyCookie } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
-router.get('/me', verifyCookie, check)
+// public routes
 router.post('/login', login)
+
+// protected routes
+router.get('/me', verifyCookie, check)
 router.post('/logout', verifyCookie, logout)
 
 export default router

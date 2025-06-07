@@ -6,13 +6,17 @@ import {
   updateOneTimeEvent,
   deleteOneTimeEvent,
 } from '../controllers/oneTimeEventController'
+import { verifyCookie } from '../middleware/authMiddleware'
 
 const router = express.Router()
 
-router.post('/', createOneTimeEvent)
+// public routes
 router.get('/', getAllOneTimeEvents)
 router.get('/:id', getOneTimeEventById)
-router.put('/:id', updateOneTimeEvent)
-router.delete('/:id', deleteOneTimeEvent)
+
+// protected routes
+router.post('/', verifyCookie, createOneTimeEvent)
+router.put('/:id', verifyCookie, updateOneTimeEvent)
+router.delete('/:id', verifyCookie, deleteOneTimeEvent)
 
 export default router

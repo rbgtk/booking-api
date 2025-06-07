@@ -75,7 +75,7 @@ model RecurringEvent {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  weekday     Int
+  weekday     Weekday
   time        String
   location    Location @relation(fields: [locationId], references: [id])
   locationId  Int

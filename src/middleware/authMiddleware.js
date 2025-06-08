@@ -5,21 +5,32 @@ dotenv.config()
 
 const secret = process.env.JWT_SECRET || 'your-default-secret'
 
-if (!secret) {
-  throw new Error('Missing JWT_SECRET in environment!')
-}
-
-export function verifyCookie(req, res, next) {
-  const token = req.cookies.token
-
-  if (!token) {
-    return res.status(401).json({ error: 'No token provided' })
-  }
-
+export async function isUser(request, response, next) {
   try {
-    req.admin = jwt.verify(token, secret)
+    const user = jwt.verify(request.cookies.token, secret)
+
+    if (user.role !== 'USER') {
+      throw new Error()
+    }
+
+    response.user = user
     next()
   } catch (error) {
-    return res.status(401).json({ error: 'Invalid or expired token' })
+    response.status(401).json({ message: 'Unauthorized' })
+  }
+}
+
+export async function isAdmin(request, response, next) {
+  try {
+    const account = jwt.verify(request.cookies.token, secret)
+
+    if (account.userRole !== 'ADMIN') {
+      throw new Error()
+    }
+
+    response.admin = account
+    next()
+  } catch (error) {
+    response.status(401).json({ message: 'Unauthorized' })
   }
 }

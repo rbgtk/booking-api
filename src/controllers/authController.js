@@ -5,66 +5,61 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const secret = process.env.JWT_SECRET || 'your-default-secret'
-
-if (!secret) {
-  throw new Error('Missing JWT_SECRET in environment!')
-}
-
 const prisma = new PrismaClient()
+const secret = process.env.JWT_SECRET
 
-export const check = async (req, res) => {
-  return res.json({ message: 'You are logged in' })
+export async function getRole(request, response) {
+  return response.status(200).json({ message: 'Authenticated', role: request.user.role })
 }
 
-export const login = async (req, res) => {
-  const { email, password } = req.body
+export async function login(request, response) {
+  const { email, password } = request.body
 
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' })
+    return response.status(400).json({ error: 'Email and password are request.ired' })
   }
 
   try {
     // Look for the admin in the database
-    const admin = await prisma.admin.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email },
     })
 
-    if (!admin) {
-      return res.status(401).json({ error: 'Invalid email or password' })
+    if (!user) {
+      return response.status(401).json({ error: 'Invalid email or password' })
     }
 
     // Compare hashed password
-    const passwordMatch = await bcrypt.compare(password, admin.passwordHash)
+    const passwordMatch = await bcrypt.compare(password, user.passwordHash)
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid email or password' })
+      return response.status(401).json({ error: 'Invalid email or password' })
     }
 
     // Create JWT token
-    const token = jwt.sign({ id: admin.id, email: admin.email }, secret, {
-      expiresIn: '1d', // 1 day expiry
+    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, secret, {
+      expiresIn: '1h', // 1 hour expiry
     })
 
-    res.cookie('token', token, {
+    response.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      maxAge: 60 * 60 * 1000, // 1 hour
     })
 
-    return res.json({ message: 'Logged in successfully' })
+    return response.json({ message: 'Logged in successfully' })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ error: 'Server error' })
+    return response.status(500).json({ error: 'Server error' })
   }
 }
 
-export const logout = async (req, res) => {
-  res.clearCookie('token', {
+export async function logout(request, response) {
+  response.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
   })
 
-  return res.json({ message: 'Logged out successfully' })
+  return response.json({ message: 'Logged out successfully' })
 }

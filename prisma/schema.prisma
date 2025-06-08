@@ -81,13 +81,11 @@ model Event {
   description String?
   price       Float
 
-  location   Location @relation(fields: [locationId], references: [id])
+  location   Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
   locationId Int
 
-  schedule   Schedule @relation(fields: [scheduleId], references: [id])
-  scheduleId Int
-
-  Reservation Reservation[]
+  schedules    Schedule[]
+  reservations Reservation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -100,7 +98,8 @@ model Schedule {
   weekday Weekday?
   time    String?
 
-  Event Event[]
+  event   Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

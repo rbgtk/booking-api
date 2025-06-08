@@ -1,9 +1,8 @@
-import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export async function createAnnouncement(req: Request, res: Response) {
+export async function createAnnouncement(req, res) {
   const { title, message, dateFrom, dateTo } = req.body
 
   try {
@@ -16,7 +15,7 @@ export async function createAnnouncement(req: Request, res: Response) {
   }
 }
 
-export async function getAllAnnouncements(req: Request, res: Response) {
+export async function getAllAnnouncements(req, res) {
   try {
     const announcements = await prisma.announcement.findMany()
     res.json(announcements)
@@ -25,7 +24,7 @@ export async function getAllAnnouncements(req: Request, res: Response) {
   }
 }
 
-export async function getAnnouncementById(req: Request, res: Response) {
+export async function getAnnouncementById(req, res) {
   const { id } = req.params
 
   try {
@@ -38,7 +37,7 @@ export async function getAnnouncementById(req: Request, res: Response) {
   }
 }
 
-export async function updateAnnouncement(req: Request, res: Response) {
+export async function updateAnnouncement(req, res) {
   const { id } = req.params
   const { title, message, dateFrom, dateTo } = req.body
 
@@ -53,12 +52,12 @@ export async function updateAnnouncement(req: Request, res: Response) {
   }
 }
 
-export async function deleteAnnouncement(req: Request, res: Response) {
+export async function deleteAnnouncement(req, res) {
   const { id } = req.params
 
   try {
     await prisma.announcement.delete({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
     })
     res.json({ message: 'Announcement deleted' })
   } catch (error) {

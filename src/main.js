@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import router from './router'
+import router from './router.js'
 
 const app = express()
 const host = '127.0.0.1'

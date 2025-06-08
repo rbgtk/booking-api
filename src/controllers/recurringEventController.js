@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function createRecurringEvent(req: Request, res: Response) {
+export async function createRecurringEvent(req, res) {
   const { name, description, weekday, time, locationId, price } = req.body
 
   try {
@@ -23,7 +22,7 @@ export async function createRecurringEvent(req: Request, res: Response) {
   }
 }
 
-export async function getAllRecurringEvents(req: Request, res: Response) {
+export async function getAllRecurringEvents(req, res) {
   try {
     const recurringEvents = await prisma.recurringEvent.findMany({
       include: { location: true },
@@ -34,7 +33,7 @@ export async function getAllRecurringEvents(req: Request, res: Response) {
   }
 }
 
-export async function getRecurringEventById(req: Request, res: Response) {
+export async function getRecurringEventById(req, res) {
   const { id } = req.params
 
   try {
@@ -48,7 +47,7 @@ export async function getRecurringEventById(req: Request, res: Response) {
   }
 }
 
-export async function updateRecurringEvent(req: Request, res: Response) {
+export async function updateRecurringEvent(req, res) {
   const { id } = req.params
   const { name, description, weekday, time, locationId, price } = req.body
 
@@ -70,7 +69,7 @@ export async function updateRecurringEvent(req: Request, res: Response) {
   }
 }
 
-export async function deleteRecurringEvent(req: Request, res: Response) {
+export async function deleteRecurringEvent(req, res) {
   const { id } = req.params
 
   try {

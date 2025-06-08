@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function createOneTimeEvent(req: Request, res: Response) {
+export async function createOneTimeEvent(req, res) {
   const { name, description, date, locationId, price } = req.body
 
   try {
@@ -22,7 +21,7 @@ export async function createOneTimeEvent(req: Request, res: Response) {
   }
 }
 
-export async function getAllOneTimeEvents(req: Request, res: Response) {
+export async function getAllOneTimeEvents(req, res) {
   try {
     const oneTimeEvents = await prisma.oneTimeEvent.findMany({
       include: { location: true },
@@ -33,7 +32,7 @@ export async function getAllOneTimeEvents(req: Request, res: Response) {
   }
 }
 
-export async function getOneTimeEventById(req: Request, res: Response) {
+export async function getOneTimeEventById(req, res) {
   const { id } = req.params
 
   try {
@@ -47,7 +46,7 @@ export async function getOneTimeEventById(req: Request, res: Response) {
   }
 }
 
-export async function updateOneTimeEvent(req: Request, res: Response) {
+export async function updateOneTimeEvent(req, res) {
   const { id } = req.params
   const { name, description, date, locationId, price } = req.body
 
@@ -68,7 +67,7 @@ export async function updateOneTimeEvent(req: Request, res: Response) {
   }
 }
 
-export async function deleteOneTimeEvent(req: Request, res: Response) {
+export async function deleteOneTimeEvent(req, res) {
   const { id } = req.params
 
   try {

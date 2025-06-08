@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function createUnavailability(req: Request, res: Response) {
+export async function createUnavailability(req, res) {
   const { date, locationId, reason } = req.body
 
   try {
@@ -16,7 +15,7 @@ export async function createUnavailability(req: Request, res: Response) {
   }
 }
 
-export async function getAllUnavailabilities(req: Request, res: Response) {
+export async function getAllUnavailabilities(req, res) {
   try {
     const unavailabilities = await prisma.unavailability.findMany()
     res.json(unavailabilities)
@@ -25,7 +24,7 @@ export async function getAllUnavailabilities(req: Request, res: Response) {
   }
 }
 
-export async function getUnavailabilityById(req: Request, res: Response) {
+export async function getUnavailabilityById(req, res) {
   const { id } = req.params
 
   try {
@@ -38,7 +37,7 @@ export async function getUnavailabilityById(req: Request, res: Response) {
   }
 }
 
-export async function updateUnavailability(req: Request, res: Response) {
+export async function updateUnavailability(req, res) {
   const { id } = req.params
   const { date, locationId, reason } = req.body
 
@@ -53,7 +52,7 @@ export async function updateUnavailability(req: Request, res: Response) {
   }
 }
 
-export async function deleteUnavailability(req: Request, res: Response) {
+export async function deleteUnavailability(req, res) {
   const { id } = req.params
 
   try {

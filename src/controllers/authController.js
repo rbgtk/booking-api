@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import dotenv from 'dotenv'
 
@@ -14,11 +13,11 @@ if (!secret) {
 
 const prisma = new PrismaClient()
 
-export const check = async (req: Request, res: Response) => {
+export const check = async (req, res) => {
   return res.json({ message: 'You are logged in' })
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req, res) => {
   const { email, password } = req.body
 
   if (!email || !password) {
@@ -60,7 +59,7 @@ export const login = async (req: Request, res: Response) => {
   }
 }
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = async (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',

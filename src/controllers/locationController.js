@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function createLocation(req: Request, res: Response) {
+export async function createLocation(req, res) {
   const { name, description, address, mapUrl } = req.body
 
   try {
@@ -16,7 +15,7 @@ export async function createLocation(req: Request, res: Response) {
   }
 }
 
-export async function getAllLocations(req: Request, res: Response) {
+export async function getAllLocations(req, res) {
   try {
     const locations = await prisma.location.findMany()
     res.json(locations)
@@ -25,7 +24,7 @@ export async function getAllLocations(req: Request, res: Response) {
   }
 }
 
-export async function getLocationById(req: Request, res: Response) {
+export async function getLocationById(req, res) {
   const { id } = req.params
 
   try {
@@ -38,7 +37,7 @@ export async function getLocationById(req: Request, res: Response) {
   }
 }
 
-export async function updateLocation(req: Request, res: Response) {
+export async function updateLocation(req, res) {
   const { id } = req.params
   const { name, description, address, mapUrl } = req.body
 
@@ -54,7 +53,7 @@ export async function updateLocation(req: Request, res: Response) {
   }
 }
 
-export async function deleteLocation(req: Request, res: Response) {
+export async function deleteLocation(req, res) {
   const { id } = req.params
 
   try {

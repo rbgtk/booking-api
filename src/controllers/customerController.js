@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { Request, Response } from 'express'
 
 const prisma = new PrismaClient()
 
-export async function createCustomer(req: Request, res: Response) {
+export async function createCustomer(req, res) {
   const { name, email, phone } = req.body
 
   try {
@@ -16,7 +15,7 @@ export async function createCustomer(req: Request, res: Response) {
   }
 }
 
-export async function getAllCustomers(req: Request, res: Response) {
+export async function getAllCustomers(req, res) {
   try {
     const customers = await prisma.customer.findMany()
     res.json(customers)
@@ -25,7 +24,7 @@ export async function getAllCustomers(req: Request, res: Response) {
   }
 }
 
-export async function getCustomerById(req: Request, res: Response) {
+export async function getCustomerById(req, res) {
   const { id } = req.params
 
   try {
@@ -36,7 +35,7 @@ export async function getCustomerById(req: Request, res: Response) {
   }
 }
 
-export async function updateCustomer(req: Request, res: Response) {
+export async function updateCustomer(req, res) {
   const { id } = req.params
   const { name, email, phone } = req.body
 
@@ -51,7 +50,7 @@ export async function updateCustomer(req: Request, res: Response) {
   }
 }
 
-export async function deleteCustomer(req: Request, res: Response) {
+export async function deleteCustomer(req, res) {
   const { id } = req.params
 
   try {

@@ -5,8 +5,8 @@ import {
   getLocationById,
   updateLocation,
   deleteLocation,
-} from '../controllers/locationController'
-import { verifyCookie } from '../middleware/authMiddleware'
+} from '../controllers/locationController.js'
+import { verifyCookie } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 

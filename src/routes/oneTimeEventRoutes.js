@@ -5,8 +5,8 @@ import {
   getOneTimeEventById,
   updateOneTimeEvent,
   deleteOneTimeEvent,
-} from '../controllers/oneTimeEventController'
-import { verifyCookie } from '../middleware/authMiddleware'
+} from '../controllers/oneTimeEventController.js'
+import { verifyCookie } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 

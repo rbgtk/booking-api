@@ -5,8 +5,8 @@ import {
   getAnnouncementById,
   updateAnnouncement,
   deleteAnnouncement,
-} from '../controllers/announcementController'
-import { verifyCookie } from '../middleware/authMiddleware'
+} from '../controllers/announcementController.js'
+import { verifyCookie } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 

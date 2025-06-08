@@ -5,8 +5,8 @@ import {
   getRecurringEventById,
   updateRecurringEvent,
   deleteRecurringEvent,
-} from '../controllers/recurringEventController'
-import { verifyCookie } from '../middleware/authMiddleware'
+} from '../controllers/recurringEventController.js'
+import { verifyCookie } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -15,8 +15,8 @@ router.get('/', getAllRecurringEvents)
 router.get('/:id', getRecurringEventById)
 
 // protected routes
-router.post('/', createRecurringEvent)
-router.put('/:id', updateRecurringEvent)
-router.delete('/:id', deleteRecurringEvent)
+router.post('/', verifyCookie, createRecurringEvent)
+router.put('/:id', verifyCookie, updateRecurringEvent)
+router.delete('/:id', verifyCookie, deleteRecurringEvent)
 
 export default router

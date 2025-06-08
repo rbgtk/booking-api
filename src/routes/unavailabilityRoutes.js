@@ -5,8 +5,8 @@ import {
   getUnavailabilityById,
   updateUnavailability,
   deleteUnavailability,
-} from '../controllers/unavailabilityController'
-import { verifyCookie } from '../middleware/authMiddleware'
+} from '../controllers/unavailabilityController.js'
+import { verifyCookie } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -15,8 +15,8 @@ router.get('/', getAllUnavailabilities)
 router.get('/:id', getUnavailabilityById)
 
 // protected routes
-router.post('/', createUnavailability)
-router.put('/:id', updateUnavailability)
-router.delete('/:id', deleteUnavailability)
+router.post('/', verifyCookie, createUnavailability)
+router.put('/:id', verifyCookie, updateUnavailability)
+router.delete('/:id', verifyCookie, deleteUnavailability)
 
 export default router

@@ -6,7 +6,7 @@ import {
   updateLocation,
   deleteLocation,
 } from '../controllers/locationController.js'
-import { verifyCookie } from '../middleware/authMiddleware.js'
+import { isAdmin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -15,8 +15,8 @@ router.get('/', getAllLocations)
 router.get('/:id', getLocationById)
 
 // protected routes
-router.post('/', verifyCookie, createLocation)
-router.put('/:id', verifyCookie, updateLocation)
-router.delete('/:id', verifyCookie, deleteLocation)
+router.post('/', isAdmin, createLocation)
+router.put('/:id', isAdmin, updateLocation)
+router.delete('/:id', isAdmin, deleteLocation)
 
 export default router

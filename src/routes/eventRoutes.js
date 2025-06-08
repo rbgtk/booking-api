@@ -1,7 +1,7 @@
 import express from 'express'
 import { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent } from '../controllers/eventController.js'
 import { createSchedule, updateSchedule, deleteSchedule } from '../controllers/scheduleController.js'
-import { verifyCookie } from '../middleware/authMiddleware.js'
+import { isAdmin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
@@ -10,12 +10,12 @@ router.get('/', getAllEvents)
 router.get('/:id', getEventById)
 
 // protected routes
-router.post('/', verifyCookie, createEvent)
-router.put('/:id', verifyCookie, updateEvent)
-router.delete('/:id', verifyCookie, deleteEvent)
+router.post('/', isAdmin, createEvent)
+router.put('/:id', isAdmin, updateEvent)
+router.delete('/:id', isAdmin, deleteEvent)
 
-router.post('/:id/schedule', verifyCookie, createSchedule)
-router.put('/:id/schedule/:scheduleId', verifyCookie, updateSchedule)
-router.delete('/:id/schedule/:scheduleId', verifyCookie, deleteSchedule)
+router.post('/:id/schedule', isAdmin, createSchedule)
+router.put('/:id/schedule/:scheduleId', isAdmin, updateSchedule)
+router.delete('/:id/schedule/:scheduleId', isAdmin, deleteSchedule)
 
 export default router

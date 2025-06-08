@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ScheduleType {
+  RECURRING
+  ONE_TIME
+}
+
 enum Weekday {
   MONDAY
   TUESDAY
@@ -29,59 +34,76 @@ enum ReservationStatus {
   REJECTED
 }
 
-model Admin {
+enum UserRole {
+  User
+  Admin
+}
+
+model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
   passwordHash String
+  userRole     UserRole
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
 
 model Customer {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  phone     String
+  id    Int    @id @default(autoincrement())
+  email String @unique
+  name  String
+  phone String
+
+  Reservation Reservation[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Location {
-  id             Int              @id @default(autoincrement())
-  name           String
-  description    String
-  address        String
-  mapUrl         String?
-  OneTimeEvent   OneTimeEvent[]
-  RecurringEvent RecurringEvent[]
+  id          Int     @id @default(autoincrement())
+  name        String
+  summary     String
+  description String
+  address     String
+  mapUrl      String?
+
+  Event          Event[]
   Unavailability Unavailability[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model OneTimeEvent {
-  id          Int      @id @default(autoincrement())
+model Event {
+  id          Int     @id @default(autoincrement())
   name        String
-  description String
-  date        DateTime
-  location    Location @relation(fields: [locationId], references: [id])
-  locationId  Int
+  description String?
   price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+
+  location   Location @relation(fields: [locationId], references: [id])
+  locationId Int
+
+  schedule   Schedule @relation(fields: [scheduleId], references: [id])
+  scheduleId Int
+
+  Reservation Reservation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model RecurringEvent {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  weekday     Weekday
-  time        String
-  location    Location @relation(fields: [locationId], references: [id])
-  locationId  Int
-  price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Schedule {
+  id      Int          @id @default(autoincrement())
+  type    ScheduleType
+  date    DateTime?
+  weekday Weekday?
+  time    String?
+
+  Event Event[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Unavailability {
@@ -90,16 +112,31 @@ model Unavailability {
   location   Location? @relation(fields: [locationId], references: [id])
   locationId Int?
   reason     String?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  id         Int               @id @default(autoincrement())
+  customer   Customer          @relation(fields: [customerId], references: [id])
+  customerId Int
+  event      Event             @relation(fields: [eventId], references: [id])
+  eventId    Int
+  date       DateTime // The actual date of this reservation (for one-time or recurring events)
+  status     ReservationStatus
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Announcement {
-  id        Int      @id @default(autoincrement())
-  title     String
-  message   String
-  dateFrom  DateTime
-  dateTo    DateTime
+  id       Int      @id @default(autoincrement())
+  title    String
+  message  String
+  dateFrom DateTime
+  dateTo   DateTime
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

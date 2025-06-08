@@ -9,11 +9,11 @@ export async function isUser(request, response, next) {
   try {
     const user = jwt.verify(request.cookies.token, secret)
 
-    if (user.role !== 'USER') {
+    if (!user.role) {
       throw new Error()
     }
 
-    response.user = user
+    request.user = user
     next()
   } catch (error) {
     response.status(401).json({ message: 'Unauthorized' })
@@ -22,13 +22,13 @@ export async function isUser(request, response, next) {
 
 export async function isAdmin(request, response, next) {
   try {
-    const account = jwt.verify(request.cookies.token, secret)
+    const user = jwt.verify(request.cookies.token, secret)
 
-    if (account.userRole !== 'ADMIN') {
+    if (user.role !== 'ADMIN') {
       throw new Error()
     }
 
-    response.admin = account
+    request.user = user
     next()
   } catch (error) {
     response.status(401).json({ message: 'Unauthorized' })

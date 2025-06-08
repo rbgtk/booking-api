@@ -7,10 +7,12 @@ export async function createSchedule(scheduleType, scheduleDate, scheduleDay, sc
     return await prisma.schedule.create({
       data: { scheduleType, scheduleDay, scheduleTime },
     })
-  } else {
+  } else if (scheduleType === 'ONE_TIME') {
     return await prisma.schedule.create({
       data: { scheduleType, scheduleDate },
     })
+  } else {
+    throw new Error('Invalid schedule type')
   }
 }
 
@@ -19,10 +21,12 @@ export async function updateSchedule(scheduleType, scheduleDate, scheduleDay, sc
     return await prisma.schedule.update({
       data: { scheduleType, scheduleDay, scheduleTime },
     })
-  } else {
+  } else if (scheduleType === 'ONE_TIME') {
     return await prisma.schedule.update({
       data: { scheduleType, scheduleDate },
     })
+  } else {
+    throw new Error('Invalid schedule type')
   }
 }
 

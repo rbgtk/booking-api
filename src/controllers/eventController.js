@@ -1,11 +1,12 @@
 import { PrismaClient } from '@prisma/client'
-import { createSchedule, updateSchedule, deleteSchedule } from './scheduleController'
 
 const prisma = new PrismaClient()
 
 export async function getAllEvents(request, response) {
   try {
-    const events = await prisma.event.findMany()
+    const events = await prisma.event.findMany({
+      include: { schedules: true, location: true },
+    })
     response.json(events)
   } catch (error) {
     response.status(500).json({ message: 'Error fetching events' })
@@ -17,6 +18,7 @@ export async function getEventById(request, response) {
   try {
     const event = await prisma.event.findUnique({
       where: { id: Number(id) },
+      include: { schedules: true, location: true },
     })
     response.json(event)
   } catch (error) {
@@ -25,11 +27,11 @@ export async function getEventById(request, response) {
 }
 
 export async function createEvent(request, response) {
-  const { name, description, locationId, price, scheduleType, scheduleDate, scheduleDay, scheduleTime } = request.body
+  const { name, description, locationId, price } = request.body
   try {
-    const schedule = await createSchedule(scheduleType, scheduleDate, scheduleDay, scheduleTime)
     const event = await prisma.event.create({
-      data: { name, description, schedule, location: { connect: { id: Number(locationId) } }, price },
+      data: { name, description, location: { connect: { id: Number(locationId) } }, price },
+      include: { schedules: true, location: true },
     })
     response.json(event)
   } catch (error) {
@@ -39,11 +41,11 @@ export async function createEvent(request, response) {
 
 export async function updateEvent(request, response) {
   const { id } = request.params
-  const { name, description, locationId, price, scheduleType, scheduleDate, scheduleDay, scheduleTime } = request.body
+  const { name, description, locationId, price } = request.body
   try {
-    const schedule = await updateSchedule(scheduleType, scheduleDate, scheduleDay, scheduleTime)
     const event = await prisma.event.update({
-      data: { name, description, schedule, location: { connect: { id: Number(locationId) } }, price },
+      data: { name, description, location: { connect: { id: Number(locationId) } }, price },
+      include: { schedules: true, location: true },
       where: { id: Number(id) },
     })
     response.json(event)
@@ -55,7 +57,6 @@ export async function updateEvent(request, response) {
 export async function deleteEvent(request, response) {
   const { id } = request.params
   try {
-    await deleteSchedule(id)
     await prisma.event.delete({
       where: { id: Number(id) },
     })

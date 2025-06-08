@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js'
 import eventRoutes from './routes/eventRoutes.js'
 import locationRoutes from './routes/locationRoutes.js'
 import customerRoutes from './routes/customerRoutes.js'
+import reservationRoutes from './routes/reservationRoutes.js'
 import announcementRoutes from './routes/announcementRoutes.js'
 import unavailabilityRoutes from './routes/unavailabilityRoutes.js'
 
@@ -18,6 +19,7 @@ router.use('/auth', authRoutes)
 router.use('/events', eventRoutes)
 router.use('/locations', locationRoutes)
 router.use('/customers', customerRoutes)
+router.use('/reservations', reservationRoutes)
 router.use('/announcements', announcementRoutes)
 router.use('/unavailabilities', unavailabilityRoutes)
 

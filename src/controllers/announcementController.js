@@ -7,10 +7,11 @@ export async function createAnnouncement(req, res) {
 
   try {
     const announcement = await prisma.announcement.create({
-      data: { title, message, dateFrom, dateTo },
+      data: { title, message, dateFrom: new Date(dateFrom), dateTo: new Date(dateTo) },
     })
     res.json(announcement)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error creating announcement' })
   }
 }
@@ -44,7 +45,7 @@ export async function updateAnnouncement(req, res) {
   try {
     const announcement = await prisma.announcement.update({
       where: { id: Number(id) },
-      data: { title, message, dateFrom, dateTo },
+      data: { title, message, dateFrom: new Date(dateFrom), dateTo: new Date(dateTo) },
     })
     res.json(announcement)
   } catch (error) {

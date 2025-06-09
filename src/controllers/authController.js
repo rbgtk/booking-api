@@ -47,7 +47,7 @@ export async function login(request, response) {
       maxAge: 60 * 60 * 1000, // 1 hour
     })
 
-    return response.json({ message: 'Logged in successfully' })
+    return response.json({ id: user.id, email: user.email, role: user.role })
   } catch (error) {
     console.error(error)
     return response.status(500).json({ error: 'Server error' })

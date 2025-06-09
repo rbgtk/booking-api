@@ -107,7 +107,8 @@ model Schedule {
 
 model Unavailability {
   id         Int       @id @default(autoincrement())
-  date       DateTime
+  dateFrom   DateTime
+  dateTo     DateTime
   location   Location? @relation(fields: [locationId], references: [id])
   locationId Int?
   reason     String?

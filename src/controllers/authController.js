@@ -8,8 +8,8 @@ dotenv.config()
 const prisma = new PrismaClient()
 const secret = process.env.JWT_SECRET
 
-export async function getRole(request, response) {
-  return response.status(200).json({ message: 'Authenticated', role: request.user.role })
+export async function getUser(request, response) {
+  return response.status(200).json(request.user)
 }
 
 export async function login(request, response) {

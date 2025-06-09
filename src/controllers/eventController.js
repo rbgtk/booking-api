@@ -49,7 +49,6 @@ export async function createEvent(request, response) {
     })
     response.json(event)
   } catch (error) {
-    console.error(error)
     response.status(500).json({ message: 'Error creating event' })
   }
 }
@@ -88,7 +87,6 @@ export async function updateEvent(request, response) {
 
     response.json(updatedEvent)
   } catch (error) {
-    console.error(error)
     response.status(500).json({ message: 'Error updating event' })
   }
 }

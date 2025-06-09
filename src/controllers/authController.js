@@ -49,7 +49,6 @@ export async function login(request, response) {
 
     return response.json({ id: user.id, email: user.email, role: user.role })
   } catch (error) {
-    console.error(error)
     return response.status(500).json({ error: 'Server error' })
   }
 }

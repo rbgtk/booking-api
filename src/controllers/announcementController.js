@@ -11,7 +11,6 @@ export async function createAnnouncement(req, res) {
     })
     res.json(announcement)
   } catch (error) {
-    console.error(error)
     res.status(500).json({ error: 'Error creating announcement' })
   }
 }

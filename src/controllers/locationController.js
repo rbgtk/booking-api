@@ -3,11 +3,11 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function createLocation(req, res) {
-  const { name, description, address, mapUrl } = req.body
+  const { name, summary, description, address, mapUrl } = req.body
 
   try {
     const location = await prisma.location.create({
-      data: { name, description, address, mapUrl },
+      data: { name, summary, description, address, mapUrl },
     })
     res.json(location)
   } catch (error) {
@@ -39,12 +39,12 @@ export async function getLocationById(req, res) {
 
 export async function updateLocation(req, res) {
   const { id } = req.params
-  const { name, description, address, mapUrl } = req.body
+  const { name, summary, description, address, mapUrl } = req.body
 
   try {
     const location = await prisma.location.update({
       where: { id: Number(id) },
-      data: { name, description, address, mapUrl },
+      data: { name, summary, description, address, mapUrl },
     })
 
     res.json(location)

@@ -10,6 +10,7 @@ import customerRoutes from './routes/customerRoutes.js'
 import reservationRoutes from './routes/reservationRoutes.js'
 import announcementRoutes from './routes/announcementRoutes.js'
 import unavailabilityRoutes from './routes/unavailabilityRoutes.js'
+import availabilityRoutes from './routes/availabilityRoutes.js'
 
 const router = express.Router()
 
@@ -24,6 +25,7 @@ router.use('/customers', customerRoutes)
 router.use('/reservations', reservationRoutes)
 router.use('/announcements', announcementRoutes)
 router.use('/unavailabilities', unavailabilityRoutes)
+router.use('/availabilities', availabilityRoutes)
 
 // log errors
 router.use(errorHandler)

@@ -3,10 +3,37 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function getAvailableDates(request, response) {
-  const { days } = request.query
+  const { days, location } = request.query
+  const today = new Date()
+  const end = new Date(today)
+
+  end.setDate(today.getDate() + Number(days))
+
+  const eventFilter = {}
+  const unavailabilityFilter = {
+    AND: [
+      {
+        dateFrom: { gte: today },
+      },
+      {
+        dateTo: { lte: end },
+      },
+    ],
+  }
+
+  if (location) {
+    eventFilter.locationId = {
+      equals: parseInt(location),
+    }
+
+    unavailabilityFilter.locationId = {
+      equals: parseInt(location),
+    }
+  }
 
   try {
     const events = await prisma.event.findMany({
+      where: eventFilter,
       include: {
         location: true,
         schedules: {
@@ -18,7 +45,8 @@ export async function getAvailableDates(request, response) {
               {
                 type: 'ONE_TIME',
                 date: {
-                  gte: new Date(),
+                  gte: today,
+                  lte: end,
                 },
               },
             ],
@@ -31,6 +59,7 @@ export async function getAvailableDates(request, response) {
       include: {
         location: true,
       },
+      where: unavailabilityFilter,
     })
 
     const possibleDates = generatePossibleDates(events, days)
@@ -90,8 +119,8 @@ function calculateBlockedDates(unavailabilities) {
 
   unavailabilities.forEach((unavailability) => {
     if (unavailability.location === null) {
-      const start = new Date(unavailability.startDate)
-      const end = new Date(unavailability.endDate)
+      const start = new Date(unavailability.dateFrom)
+      const end = new Date(unavailability.dateTo)
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         blockedDates.add(new Date(d).toISOString().split('T')[0])
@@ -100,4 +129,70 @@ function calculateBlockedDates(unavailabilities) {
   })
 
   return blockedDates
+}
+
+export async function getEventsForDate(request, response) {
+  const { date, location } = request.query
+  const selectedDate = new Date(date)
+
+  const eventFilter = {}
+  const unavailabilityFilter = {
+    dateFrom: {
+      lte: selectedDate, // start of the date range
+    },
+    dateTo: {
+      gte: selectedDate, // end of the date range
+    },
+  }
+
+  if (location) {
+    eventFilter.locationId = {
+      equals: parseInt(location),
+    }
+
+    unavailabilityFilter.locationId = {
+      equals: parseInt(location),
+    }
+  }
+
+  try {
+    const events = await prisma.event.findMany({
+      include: {
+        location: true,
+        schedules: true,
+      },
+      where: eventFilter,
+    })
+
+    const unavailabilities = await prisma.unavailability.findMany({
+      include: {
+        location: true,
+      },
+      where: unavailabilityFilter,
+    })
+
+    const filteredEvents = events.filter((event) => {
+      const locationUnavailabilities = unavailabilities.filter((unavailability) => {
+        return unavailability.location && unavailability.location.id === event.location.id
+      })
+
+      if (locationUnavailabilities.length > 0) return false
+
+      const filteredSchedules = event.schedules.filter((schedule) => {
+        return (
+          (schedule.type === 'ONE_TIME' && schedule.date.toDateString() === selectedDate.toDateString()) ||
+          (schedule.type === 'RECURRING' && weekdayStringToInt(schedule.weekday) === selectedDate.getDay())
+        )
+      })
+
+      event.schedules = filteredSchedules
+
+      return filteredSchedules.length > 0
+    })
+
+    response.json(filteredEvents)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json({ error: 'Error fetching events on date' })
+  }
 }

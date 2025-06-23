@@ -1,6 +1,5 @@
 import express from 'express'
 
-import { logRequest } from './middleware/logMiddleware.js'
 import { errorHandler } from './middleware/errorMiddleware.js'
 
 import authRoutes from './routes/authRoutes.js'
@@ -13,9 +12,6 @@ import unavailabilityRoutes from './routes/unavailabilityRoutes.js'
 import availabilityRoutes from './routes/availabilityRoutes.js'
 
 const router = express.Router()
-
-// log requests
-router.use(logRequest)
 
 // route requests
 router.use('/auth', authRoutes)

@@ -19,6 +19,7 @@ export async function createUnavailability(req, res) {
     const unavailability = await prisma.unavailability.create({ data })
     res.json(unavailability)
   } catch (error) {
+    console.error(error)
     res.status(500).json({ error: 'Error creating unavailability' })
   }
 }

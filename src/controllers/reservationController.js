@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { sendAdminReservationCreatedEmail } from '../emails/adminReservationCreated.js'
 
 const prisma = new PrismaClient()
 
@@ -38,6 +39,8 @@ export async function createReservation(req, res) {
         notes,
       },
     })
+
+    await sendAdminReservationCreatedEmail(date, name, email, phone, notes, guests)
 
     return res.status(201).json(reservation)
   } catch (error) {

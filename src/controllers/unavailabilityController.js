@@ -24,7 +24,7 @@ export async function createUnavailability(req, res) {
   }
 }
 
-export async function getAllUnavailabilities(req, res) {
+export async function getUnavailabilities(req, res) {
   try {
     const unavailabilities = await prisma.unavailability.findMany({
       include: {
@@ -34,20 +34,6 @@ export async function getAllUnavailabilities(req, res) {
     res.json(unavailabilities)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching unavailabilities' })
-  }
-}
-
-export async function getUnavailabilityById(req, res) {
-  const { id } = req.params
-
-  try {
-    const unavailability = await prisma.unavailability.findUnique({
-      where: { id: Number(id) },
-      include: { location: true },
-    })
-    res.json(unavailability)
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching unavailability' })
   }
 }
 

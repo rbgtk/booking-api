@@ -15,25 +15,12 @@ export async function createAnnouncement(req, res) {
   }
 }
 
-export async function getAllAnnouncements(req, res) {
+export async function getAnnouncements(req, res) {
   try {
     const announcements = await prisma.announcement.findMany()
     res.json(announcements)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching announcements' })
-  }
-}
-
-export async function getAnnouncementById(req, res) {
-  const { id } = req.params
-
-  try {
-    const announcement = await prisma.announcement.findUnique({
-      where: { id: Number(id) },
-    })
-    res.json(announcement)
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching announcement' })
   }
 }
 

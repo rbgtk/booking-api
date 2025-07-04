@@ -15,25 +15,12 @@ export async function createLocation(req, res) {
   }
 }
 
-export async function getAllLocations(req, res) {
+export async function getLocations(req, res) {
   try {
     const locations = await prisma.location.findMany()
     res.json(locations)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching locations' })
-  }
-}
-
-export async function getLocationById(req, res) {
-  const { id } = req.params
-
-  try {
-    const location = await prisma.location.findUnique({
-      where: { id: Number(id) },
-    })
-    res.json(location)
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching location' })
   }
 }
 

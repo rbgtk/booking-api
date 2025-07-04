@@ -1,9 +1,9 @@
 import express from 'express'
-import { createReservation } from '../controllers/reservationController.js'
+import { createBooking } from '../controllers/bookingController.js'
 
 const router = express.Router()
 
-router.post('/', createReservation)
+router.post('/', createBooking)
 // router.get('/', getAllReservations)
 // router.get('/:id', getReservationById)
 // router.put('/:id', updateReservation)

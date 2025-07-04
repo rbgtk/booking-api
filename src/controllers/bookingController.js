@@ -3,7 +3,7 @@ import { sendAdminReservationCreatedEmail } from '../emails/adminReservationCrea
 
 const prisma = new PrismaClient()
 
-export async function createReservation(req, res) {
+export async function createBooking(req, res) {
   try {
     const { date, eventId, scheduleId, name, email, phone, guests, notes } = req.body
 

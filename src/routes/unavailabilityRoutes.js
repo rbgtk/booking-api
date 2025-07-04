@@ -1,8 +1,7 @@
 import express from 'express'
 import {
   createUnavailability,
-  getAllUnavailabilities,
-  getUnavailabilityById,
+  getUnavailabilities,
   updateUnavailability,
   deleteUnavailability,
 } from '../controllers/unavailabilityController.js'
@@ -11,8 +10,7 @@ import { isAdmin } from '../middleware/authMiddleware.js'
 const router = express.Router()
 
 // public routes
-router.get('/', getAllUnavailabilities)
-router.get('/:id', getUnavailabilityById)
+router.get('/', getUnavailabilities)
 
 // protected routes
 router.post('/', isAdmin, createUnavailability)

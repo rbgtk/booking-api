@@ -1,16 +1,15 @@
 import express from 'express'
-import { createEvent, getAllEvents, getEventById, updateEvent, deleteEvent } from '../controllers/serviceController.js'
+import { createService, getServices, updateService, deleteService } from '../controllers/serviceController.js'
 import { isAdmin } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
 // public routes
-router.get('/', getAllEvents)
-router.get('/:id', getEventById)
+router.get('/', getServices)
 
 // protected routes
-router.post('/', isAdmin, createEvent)
-router.put('/:id', isAdmin, updateEvent)
-router.delete('/:id', isAdmin, deleteEvent)
+router.post('/', isAdmin, createService)
+router.put('/:id', isAdmin, updateService)
+router.delete('/:id', isAdmin, deleteService)
 
 export default router
